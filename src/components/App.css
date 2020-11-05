@@ -1,0 +1,13 @@
+body {
+    background-color: #F2F1F0;
+}
+
+h1.f-headline {
+    color: #7A04DD;
+}
+
+.input-box {
+    background-color: #141414;
+    color: white;
+    border-radius: 0.5rem;
+}
