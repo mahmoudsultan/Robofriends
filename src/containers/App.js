@@ -19,12 +19,17 @@ const App = () => {
     setSearchField(event.target.value);
   }
 
-  fetch(ROBOTS_API_URI)
-    .then((response) => response.json())
-    .then((robotsJSON) => {
-      setRobots(robotsJSON);
+  useEffect(() => {
+    const getRobotsFromAPI = async () => {
+      const response = await fetch(ROBOTS_API_URI);
+      const robotsJson = await response.json();
+
+      setRobots(robotsJson);
       setLoading(false);
-    });
+    }
+
+    getRobotsFromAPI();
+  }, []);
 
   useEffect(() => {
     const filteredRobots = robots.filter((robot) => {
