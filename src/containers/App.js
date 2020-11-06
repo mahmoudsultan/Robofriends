@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { useState, useEffect } from 'react';
 
 import './App.css'
 
@@ -9,50 +9,48 @@ import ErrorBoundry from '../components/ErrorBoundry';
 
 const ROBOTS_API_URI = 'https://jsonplaceholder.typicode.com/users';
 
-class App extends Component {
-  constructor() {
-    super();
+const App = () => {
+  const [robots, setRobots] = useState([]);
+  const [filteredRobots, setFilteredRobots] = useState([]);
+  const [searchField, setSearchField] = useState('');
+  const [loading, setLoading] = useState(true);
 
-    this.state = {
-      robots: [],
-      seachField: '',
-      loading: true,
-    };
+  const onSearchChange = (event) => {
+    setSearchField(event.target.value);
   }
 
-  onSearchChange = (event) => {
-    this.setState({ seachField: event.target.value });
-  }
-
-  async componentDidMount() {
-    const robotsFromApi = await (await fetch(ROBOTS_API_URI)).json();
-
-    this.setState({ robots: robotsFromApi, loading: false });
-  }
-
-  render() {
-    const filteredRobots = this.state.robots.filter(robot => {
-      return robot.name.toLowerCase().includes(this.state.seachField.toLowerCase())
+  fetch(ROBOTS_API_URI)
+    .then((response) => response.json())
+    .then((robotsJSON) => {
+      setRobots(robotsJSON);
+      setLoading(false);
     });
 
-    return (
-      <>
-        <h1 className='tc f-headline mb2'>RoboFriends</h1>
-        <p className='tc mb5 f3'>My First React App.</p>
-        <SearchBox searchChange={this.onSearchChange} />
+  useEffect(() => {
+    const filteredRobots = robots.filter((robot) => {
+      return robot.name.toLowerCase().includes(searchField.toLowerCase());
+    });
 
-        <ErrorBoundry>
-          {(() => {
-            if (this.state.loading) {
-              return <h2>Loading...</h2>;
-            } else {
-              return <CardList robots={filteredRobots} />;
-            }
-          })()}
-        </ErrorBoundry>
-      </>
-    );
-  }
+    setFilteredRobots(filteredRobots);
+  }, [searchField, robots]);
+
+  return (
+    <>
+      <h1 className='tc f-headline mb2'>RoboFriends</h1>
+      <p className='tc mb5 f3'>My First React App.</p>
+      <SearchBox searchChange={onSearchChange} />
+
+      <ErrorBoundry>
+        {(() => {
+          if (loading) {
+            return <h2>Loading...</h2>;
+          } else {
+            return <CardList robots={filteredRobots} />;
+          }
+        })()}
+      </ErrorBoundry>
+    </>
+  );
 }
 
 export default App;
