@@ -11,7 +11,6 @@ const ROBOTS_API_URI = 'https://jsonplaceholder.typicode.com/users';
 
 const App = () => {
   const [robots, setRobots] = useState([]);
-  const [filteredRobots, setFilteredRobots] = useState([]);
   const [searchField, setSearchField] = useState('');
   const [loading, setLoading] = useState(true);
 
@@ -31,14 +30,10 @@ const App = () => {
     getRobotsFromAPI();
   }, []);
 
-  useEffect(() => {
-    const filteredRobots = robots.filter((robot) => {
-      return robot.name.toLowerCase().includes(searchField.toLowerCase());
-    });
-
-    setFilteredRobots(filteredRobots);
-  }, [searchField, robots]);
-
+  const filteredRobots = robots.filter((robot) => {
+    return robot.name.toLowerCase().includes(searchField.toLowerCase());
+  });
+  
   return (
     <>
       <h1 className='tc f-headline mb2'>RoboFriends</h1>
