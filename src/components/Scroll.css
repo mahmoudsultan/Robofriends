@@ -1,0 +1,6 @@
+@media only screen and (max-width: 768px) {
+    .scrollable-on-mobile {
+        height: 50vh;
+        overflow-y: scroll;        
+    }
+}

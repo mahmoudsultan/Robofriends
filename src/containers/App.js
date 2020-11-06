@@ -2,8 +2,10 @@ import { Component } from 'react';
 
 import './App.css'
 
-import CardList from './CardList';
-import SearchBox from './SearchBox';
+import CardList from '../components/CardList';
+import SearchBox from '../components/SearchBox';
+
+import ErrorBoundry from '../components/ErrorBoundry';
 
 const ROBOTS_API_URI = 'https://jsonplaceholder.typicode.com/users';
 
@@ -39,13 +41,15 @@ class App extends Component {
         <p className='tc mb5 f3'>My First React App.</p>
         <SearchBox searchChange={this.onSearchChange} />
 
-        {(() => {
-          if (this.state.loading) {
-            return <h2>Loading...</h2>;
-          } else {
-            return <CardList robots={filteredRobots} />;
-          }
-        })()}
+        <ErrorBoundry>
+          {(() => {
+            if (this.state.loading) {
+              return <h2>Loading...</h2>;
+            } else {
+              return <CardList robots={filteredRobots} />;
+            }
+          })()}
+        </ErrorBoundry>
       </>
     );
   }
