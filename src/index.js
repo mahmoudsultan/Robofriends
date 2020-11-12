@@ -10,9 +10,9 @@ import App from './containers/App';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 
-import { searchReducer } from './reducers';
+import rootReducer from './reducer.js';
 
-const store = createStore(searchReducer);
+const store = createStore(rootReducer);
 
 ReactDOM.render(
   <Provider store={store}>
