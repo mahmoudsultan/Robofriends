@@ -7,10 +7,19 @@ import './index.css';
 
 import App from './containers/App';
 
+import { createStore } from 'redux';
+import { Provider } from 'react-redux';
+
+import { searchReducer } from './reducers';
+
+const store = createStore(searchReducer);
+
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+  <Provider store={store}>
+    <React.StrictMode>
+      <App />
+    </React.StrictMode>
+  </Provider>,
   document.getElementById('root')
 );
 

@@ -1,22 +1,31 @@
 import { useState, useEffect } from 'react';
 
-import './App.css'
+import { connect } from 'react-redux';
+import { setSearchField } from '../actions';
 
 import CardList from '../components/CardList';
 import SearchBox from '../components/SearchBox';
 
 import ErrorBoundry from '../components/ErrorBoundry';
 
+import './App.css'
+
 const ROBOTS_API_URI = 'https://jsonplaceholder.typicode.com/users';
 
-const App = () => {
-  const [robots, setRobots] = useState([]);
-  const [searchField, setSearchField] = useState('');
-  const [loading, setLoading] = useState(true);
+const mapStatesToProps = (state) => {
+  return { 
+    searchField: state.searchField,
+  };
+};
 
-  const onSearchChange = (event) => {
-    setSearchField(event.target.value);
-  }
+const mapDispatchToProps = (dispatch) => ({
+  onSearchChange: (event) => dispatch(setSearchField(event.target.value)),
+});
+
+const App = ({ searchField, onSearchChange }) => {
+  console.log(onSearchChange);
+  const [robots, setRobots] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const getRobotsFromAPI = async () => {
@@ -53,4 +62,4 @@ const App = () => {
   );
 }
 
-export default App;
+export default connect(mapStatesToProps, mapDispatchToProps)(App);
