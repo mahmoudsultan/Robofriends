@@ -28,7 +28,7 @@ const mapDispatchToProps = (dispatch) => ({
 const App = ({ searchField, onSearchChange, loading, robots, error, requestRobots }) => {
   useEffect(() => {
     requestRobots();
-  }, []);
+  }, [requestRobots]);
 
   const filteredRobots = robots.filter((robot) => {
     return robot.name.toLowerCase().includes(searchField.toLowerCase());
